@@ -1,9 +1,23 @@
 import { Link } from "react-router";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        if (email && password) {
+            const token = {
+                email: email,
+                password: password
+            };
+            localStorage.setItem('token', JSON.stringify(token));
+            navigate('/dashboard');
+        } else return
+    }
 
     return (
         <div className="flex items-center justify-center px-4">
@@ -12,12 +26,12 @@ export default function Login() {
                     Student Planner
                 </h1>
 
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>
                         <label className="block text-gray-700 mb-1">Email</label>
                         <input
                             value={email}
-                            onChange={(e)=> setEmail(e.target.value)}
+                            onChange={(e) => setEmail(e.target.value)}
                             type="email"
                             placeholder="Enter your email"
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -28,7 +42,7 @@ export default function Login() {
                         <label className="block text-gray-700 mb-1">Password</label>
                         <input
                             value={password}
-                            onChange={(e)=> setPassword(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value)}
                             type="password"
                             placeholder="Enter your password"
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
