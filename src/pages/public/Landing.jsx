@@ -1,6 +1,7 @@
-import { Link } from "react-router";
+import React from 'react'
+import { Link } from 'react-router'
 
-export default function Landing() {
+function Landing() {
     return (
         <div className="flex items-center justify-center px-4">
             <div className="max-w-lg w-full bg-white p-10 rounded-2xl shadow-lg text-center">
@@ -30,3 +31,5 @@ export default function Landing() {
         </div>
     );
 }
+
+export default Landing

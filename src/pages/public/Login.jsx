@@ -1,8 +1,8 @@
-import { Link } from "react-router";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import React from 'react'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router'
 
-export default function Login() {
+function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -10,11 +10,7 @@ export default function Login() {
     const handleSubmit = e => {
         e.preventDefault();
         if (email && password) {
-            const token = {
-                email: email,
-                password: password
-            };
-            localStorage.setItem('token', JSON.stringify(token));
+            localStorage.setItem('token', JSON.stringify({ email }));
             navigate('/dashboard');
         } else return
     }
@@ -67,3 +63,5 @@ export default function Login() {
         </div>
     );
 }
+
+export default Login

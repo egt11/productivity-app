@@ -1,10 +1,11 @@
 import React from 'react'
 import { Navigate } from 'react-router'
+import { Outlet } from 'react-router'
 
 function ProtectedRoute({ children }) {
     const isLoggedIn = !!localStorage.getItem('token')
     return (
-        isLoggedIn ? children : <Navigate to="/login" replace />
+        isLoggedIn ? <Outlet /> : <Navigate to="/login" replace />
     )
 }
 

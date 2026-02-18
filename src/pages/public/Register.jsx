@@ -1,7 +1,8 @@
-import { Link } from "react-router";
-import { useState } from "react";
+import React from 'react'
+import { useState } from 'react'
+import { Link } from 'react-router'
 
-export default function Register() {
+function Register() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -24,7 +25,7 @@ export default function Register() {
                         <label className="block text-gray-700 mb-1">Full Name</label>
                         <input
                             value={name}
-                            onChange={(e)=> setName(e.target.value)}
+                            onChange={(e) => setName(e.target.value)}
                             type="text"
                             placeholder="Enter your name"
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -35,7 +36,7 @@ export default function Register() {
                         <label className="block text-gray-700 mb-1">Email</label>
                         <input
                             value={email}
-                            onChange={(e)=> setEmail(e.target.value)}
+                            onChange={(e) => setEmail(e.target.value)}
                             type="email"
                             placeholder="Enter your email"
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -82,3 +83,5 @@ export default function Register() {
         </div>
     );
 }
+
+export default Register
