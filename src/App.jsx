@@ -7,6 +7,9 @@ import Register from './pages/public/Register'
 import Landing from './pages/public/Landing'
 import Dashboard from './pages/dashboard/Dashboard'
 import ProtectedRoute from './components/ProtectedRoute'
+import Notes from './pages/dashboard/Notes'
+import Tasks from './pages/dashboard/Tasks'
+import Settings from './pages/dashboard/Settings'
 
 function App() {
   return (
@@ -19,7 +22,10 @@ function App() {
 
       <Route element={<ProtectedRoute />}>
         <Route path='/dashboard' element={<DashboardLayout />}>
-          <Route index element={<Dashboard />} />
+          <Route index element={<Dashboard />}/>
+          <Route path='notes' element={<Notes />} />
+          <Route path='tasks' element={<Tasks />} />
+          <Route path='settings' element={<Settings />} />
         </Route>
       </Route>
 
