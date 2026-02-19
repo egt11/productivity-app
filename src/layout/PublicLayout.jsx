@@ -4,9 +4,9 @@ import { Outlet } from 'react-router'
 
 function PublicLayout() {
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-dvh flex flex-col bg-slate-50 overflow-hidden">
             <Navbar />
-            <main className="flex-1 container mx-auto px-4 py-6">
+            <main className="flex-1 relative flex flex-col items-center justify-center">
                 <Outlet />
             </main>
         </div>
