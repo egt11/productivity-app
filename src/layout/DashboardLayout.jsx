@@ -66,7 +66,7 @@ function DashboardLayout() {
                         <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">
                             P
                         </div>
-                        <span className="text-xl font-bold text-slate-800 tracking-tight">Project Name</span>
+                        <span className="text-xl font-bold text-slate-800 tracking-tight">Planner App</span>
                     </div>
                     <button onClick={toggleMenu} className="lg:hidden text-gray-400 hover:text-gray-600">
                         <X size={20} />
