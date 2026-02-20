@@ -1,8 +1,11 @@
 import React from 'react'
+import PageTitleButton from '../../components/PageTitleButton'
 
 function Tasks() {
   return (
-    <div>Tasks</div>
+    <div>
+      <PageTitleButton title="Your Tasks" button="Add Task" onClick={() => alert('Add Task clicked!')} />
+    </div>
   )
 }
 
