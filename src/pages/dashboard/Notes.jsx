@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import NoteCard from '../../components/NoteCard'
 import PageTitleButton from '../../components/PageTitleButton'
 import NoteModal from '../../components/NoteModal'
@@ -19,8 +19,20 @@ function Notes() {
     setShowModal(false)
   }
 
+  const deleteNote = (id) => {
+    setNotes(notes.filter(note => note.id !== id))
+  }
+
   const closeModal = () => setShowModal(false)
 
+  useEffect(()=> {
+    const storedNotes = JSON.parse(localStorage.getItem('notes')) || []
+    setNotes(storedNotes)
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(notes))
+  }, [notes])
 
   return (
     <div>
@@ -42,7 +54,14 @@ function Notes() {
           :
 
           notes.map((note) => (
-            <NoteCard key={note.id} title={note.title} content={note.content} date={new Date().toLocaleDateString()} />
+            <NoteCard
+              key={note.id}
+              note={note.id}
+              title={note.title}
+              content={note.content}
+              date={new Date().toLocaleDateString()}
+              onDelete={deleteNote}
+            />
           ))}
       </div>
     </div>
