@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Outlet, useNavigate, NavLink } from 'react-router';
-import { Menu, LayoutDashboard, Notebook, CheckSquare, Settings, LogOut, X } from 'lucide-react';
+import { Outlet, useNavigate, NavLink, Link } from 'react-router';
+import { Menu, LayoutDashboard, Notebook, CheckSquare, Settings, LogOut, X, House } from 'lucide-react';
 
 function DashboardLayout() {
     const navigate = useNavigate();
@@ -100,9 +100,13 @@ function DashboardLayout() {
 
                 {/* Bottom Section / Logout */}
                 <div className="p-4 border-t border-gray-100">
+                    <Link to="/" className='flex items-center gap-3 w-full px-4 py-3 text-slate-500 font-medium hover:bg-indigo-50 hover:text-indigo-600 rounded-xl transition-all duration-200 cursor-pointer'>
+                        <House size={20} />
+                        Go to Home
+                    </Link>
                     <button
                         onClick={logout}
-                        className="flex items-center gap-3 w-full px-4 py-3 text-slate-500 font-medium hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200"
+                        className="flex items-center gap-3 w-full px-4 py-3 text-slate-500 font-medium hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200 cursor-pointer"
                     >
                         <LogOut size={20} />
                         Logout

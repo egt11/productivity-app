@@ -8,7 +8,7 @@ function Landing() {
 
     useEffect(() => {
         setToken(JSON.parse(localStorage.getItem('token')) || null);
-    }, [])
+    }, []);
 
     return (
         <div className="relative flex flex-col items-center justify-center bg-slate-50 overflow-hidden">
@@ -43,7 +43,7 @@ function Landing() {
                             to="/login"
                             className="px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-2xl font-bold text-lg hover:bg-slate-50 active:scale-95 transition-all"
                         >
-                            Sign In
+                            Log In
                         </Link>
                     )}
                 </div>
