@@ -1,8 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import NoteCard from '../../components/NoteCard'
+import NoteCard from '../../components/notes/NoteCard'
 import PageTitleButton from '../../components/PageTitleButton'
-import NoteModal from '../../components/NoteModal'
+import NoteModal from '../../components/notes/NoteModal'
 
 function Notes() {
   const [notes, setNotes] = useState([])
