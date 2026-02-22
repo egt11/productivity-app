@@ -66,7 +66,7 @@ function Notes() {
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
         {notes.length === 0 ?
           <div className='col-span-full text-center text-slate-500 py-10 italic'>
-            No notes yet.!
+            No notes yet.
           </div>
 
           :
