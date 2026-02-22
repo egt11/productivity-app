@@ -3,8 +3,18 @@ import { Calendar, MoreVertical, Notebook } from 'lucide-react';
 import DropdownMenu from './DropdownMenu';
 import { useState } from 'react';
 
-function NoteCard({ note, title, content, date, onDelete }) {
+function NoteCard({ note, date, onDelete, onEdit }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const handleEdit = () => {
+        onEdit();
+        setIsMenuOpen(false);
+    }
+
+    const handleDelete = () => {
+        onDelete();
+        setIsMenuOpen(false);
+    }
 
     return (
         <div className="group relative bg-white border border-slate-200 p-5 rounded-2xl hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-50/50 transition-all duration-300 flex flex-col h-full">
@@ -17,17 +27,17 @@ function NoteCard({ note, title, content, date, onDelete }) {
                     <button className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-50 transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                         <MoreVertical size={18} />
                     </button>
-                    {isMenuOpen && <DropdownMenu onDelete={onDelete} note={note} />}
+                    {isMenuOpen && <DropdownMenu onDelete={handleDelete} onEdit={handleEdit} />}
                 </div>
             </div>
 
             {/* Content */}
             <div className="flex-1">
                 <h3 className="text-lg font-bold text-slate-800 mb-2 group-hover:text-indigo-600 transition-colors line-clamp-1">
-                    {title || "Untitled Note"}
+                    {note.title || "Untitled Note"}
                 </h3>
                 <p className="text-slate-500 text-sm leading-relaxed line-clamp-3">
-                    {content || "No content provided yet..."}
+                    {note.content || "No content provided yet..."}
                 </p>
             </div>
 

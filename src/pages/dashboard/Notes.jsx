@@ -7,20 +7,30 @@ import NoteModal from '../../components/NoteModal'
 function Notes() {
   const [notes, setNotes] = useState([])
   const [showModal, setShowModal] = useState(false)
+  const [selectedNote, setSelectedNote] = useState(null)
 
-  const addNote = (title, content) => {
-    if (!title || !content) return
-    const newNote = {
-      id: Date.now(),
-      title: title,
-      content: content,
-    }
-    setNotes([...notes, newNote])
-    setShowModal(false)
+  const handleAdd = () => {
+    setSelectedNote(null)
+    setShowModal(true)
+  }
+
+  const handleEdit = (note) => {
+    setSelectedNote(note)
+    setShowModal(true) 
   }
 
   const deleteNote = (id) => {
     setNotes(notes.filter(note => note.id !== id))
+  }
+
+  const saveNote = (data) => {
+    if (selectedNote) {
+      setNotes(notes.map(note => note.id === selectedNote.id ? { ...note, ...data } : note))
+    }else{
+      setNotes([...notes, { id: Date.now(), ...data }])
+    }
+    setSelectedNote(null)
+    setShowModal(false)
   }
 
   const closeModal = () => setShowModal(false)
@@ -36,11 +46,12 @@ function Notes() {
 
   return (
     <div>
-      <PageTitleButton title="Your Notes" button="Add Note" onClick={() => setShowModal(true)} />
+      <PageTitleButton title="Your Notes" button="Add Note" onClick={handleAdd} />
 
       {showModal && (
         <NoteModal
-          onSave={addNote}
+          selectedNote={selectedNote}
+          onSave={saveNote}
           onClose={closeModal}
         />
       )}
@@ -56,11 +67,10 @@ function Notes() {
           notes.map((note) => (
             <NoteCard
               key={note.id}
-              note={note.id}
-              title={note.title}
-              content={note.content}
+              note={note}
               date={new Date().toLocaleDateString()}
-              onDelete={deleteNote}
+              onDelete={() => deleteNote(note.id)}
+              onEdit={() => handleEdit(note)}
             />
           ))}
       </div>

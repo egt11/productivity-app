@@ -5,6 +5,10 @@ function Tasks() {
   return (
     <div>
       <PageTitleButton title="Your Tasks" button="Add Task" onClick={() => alert('Add Task clicked!')} />
+
+      <div>
+        tasks
+      </div>
     </div>
   )
 }
