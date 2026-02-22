@@ -27,7 +27,13 @@ function Notes() {
     if (selectedNote) {
       setNotes(notes.map(note => note.id === selectedNote.id ? { ...note, ...data } : note))
     }else{
-      setNotes([...notes, { id: Date.now(), ...data }])
+      const newNote = {
+        id: Date.now(),
+        title: data.title,
+        content: data.content,
+        date: new Date().toLocaleDateString()
+      }
+      setNotes([...notes, newNote])
     }
     setSelectedNote(null)
     setShowModal(false)

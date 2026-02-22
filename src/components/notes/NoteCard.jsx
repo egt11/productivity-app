@@ -1,10 +1,12 @@
 import React from 'react';
-import { Calendar, MoreVertical, Notebook } from 'lucide-react';
+import { Calendar, MoreVertical, Notebook, Eye } from 'lucide-react';
 import DropdownMenu from './DropdownMenu';
 import { useState } from 'react';
+import ViewNote from './ViewNote';
 
 function NoteCard({ note, date, onDelete, onEdit }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isViewing, setIsViewing] = useState(false);
 
     const handleEdit = () => {
         onEdit();
@@ -16,19 +18,34 @@ function NoteCard({ note, date, onDelete, onEdit }) {
         setIsMenuOpen(false);
     }
 
+    const viewNote = () => {
+        setIsViewing(true);
+        setIsMenuOpen(false);
+    }
+
+    const closeView = () => setIsViewing(false);
+
     return (
-        <div className="group relative bg-white border border-slate-200 p-5 rounded-2xl hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-50/50 transition-all duration-300 flex flex-col h-full">
+        <div className="relative bg-white border border-slate-200 p-5 rounded-2xl hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-50/50 transition-all duration-300 flex flex-col h-full">
+            {isViewing && <ViewNote note={note} onClose={closeView} />}
+
             {/* Header: Icon & Options */}
             <div className="flex items-center justify-between mb-4">
                 <div className="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
                     <Notebook size={20} />
                 </div>
-                <div className="relative">
-                    <button className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-50 transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                        <MoreVertical size={18} />
+                <div className='flex gap-2 items-center'>
+                    <button>
+                        <Eye size={24} className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-50 transition-colors" onClick={viewNote} />
                     </button>
-                    {isMenuOpen && <DropdownMenu onDelete={handleDelete} onEdit={handleEdit} />}
+                    <div className="relative">
+                        <button className="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-50 transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                            <MoreVertical size={18} />
+                        </button>
+                        {isMenuOpen && <DropdownMenu onDelete={handleDelete} onEdit={handleEdit} />}
+                    </div>
                 </div>
+
             </div>
 
             {/* Content */}
