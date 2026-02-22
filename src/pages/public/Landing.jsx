@@ -1,8 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { LayoutDashboard, Notebook, CheckSquare, Sparkles } from 'lucide-react'
+import { useState, useEffect } from 'react';
 
 function Landing() {
+    const [token, setToken] = useState(null);
+
+    useEffect(() => {
+        setToken(JSON.parse(localStorage.getItem('token')) || null);
+    }, [])
+
     return (
         <div className="relative flex flex-col items-center justify-center bg-slate-50 overflow-hidden">
 
@@ -15,12 +22,12 @@ function Landing() {
 
                 {/* Hero Content */}
                 <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-6">
-                    Master your studies with <br />
-                    <span className="text-indigo-600 italic">Precision.</span>
+                    Increase productivity, <br />
+                    Enter <span className="text-indigo-600 italic">Flow State.</span>
                 </h1>
 
                 <p className="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-                    A unified workspace to organize your <strong>tasks</strong>, secure your <strong>notes</strong>, and boost your daily productivity. Built for the modern student.
+                    A unified workspace to organize your <strong>tasks</strong>, secure your <strong>notes</strong>, and boost your daily productivity.
                 </p>
 
                 {/* CTA Buttons */}
@@ -31,12 +38,14 @@ function Landing() {
                     >
                         Start Planning for Free
                     </Link>
-                    <Link
-                        to="/login"
-                        className="px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-2xl font-bold text-lg hover:bg-slate-50 active:scale-95 transition-all"
-                    >
-                        Sign In
-                    </Link>
+                    {!token && (
+                        <Link
+                            to="/login"
+                            className="px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-2xl font-bold text-lg hover:bg-slate-50 active:scale-95 transition-all"
+                        >
+                            Sign In
+                        </Link>
+                    )}
                 </div>
 
                 {/* Feature Mini-Preview */}

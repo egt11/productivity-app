@@ -40,7 +40,7 @@ function DashboardLayout() {
                         Welcome back, <span className="text-indigo-600 font-bold">{email.split('@')[0] || 'User'}</span>
                     </h1>
                 </div>
-                
+
                 <div className="hidden sm:block text-xs font-semibold text-gray-400 uppercase tracking-wider">
                     {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
                 </div>
@@ -56,17 +56,18 @@ function DashboardLayout() {
 
             {/* Sidebar */}
             <aside
-                className={`fixed top-0 left-0 h-screen w-62.5 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-300 ease-in-out z-50 [grid-area:sidebar] lg:static lg:translate-x-0 ${
-                    isOpen ? 'translate-x-0' : '-translate-x-full'
-                }`}
+                className={`fixed top-0 left-0 h-screen w-62.5 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-300 ease-in-out z-50 [grid-area:sidebar] lg:static lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'
+                    }`}
             >
                 {/* Logo Section */}
                 <div className="p-6 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">
-                            P
+                            F
                         </div>
-                        <span className="text-xl font-bold text-slate-800 tracking-tight">Planner App</span>
+                        <span className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors flex">
+                            Flow<span className="text-indigo-600 group-hover:text-indigo-700">State</span>
+                        </span>
                     </div>
                     <button onClick={toggleMenu} className="lg:hidden text-gray-400 hover:text-gray-600">
                         <X size={20} />
@@ -82,10 +83,9 @@ function DashboardLayout() {
                                     to={link.link}
                                     end={link.link === '/dashboard'}
                                     className={({ isActive }) =>
-                                        `flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
-                                            isActive
-                                                ? 'bg-indigo-50 text-indigo-700 shadow-sm'
-                                                : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
+                                        `flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${isActive
+                                            ? 'bg-indigo-50 text-indigo-700 shadow-sm'
+                                            : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
                                         }`
                                     }
                                     onClick={() => setIsOpen(false)}
