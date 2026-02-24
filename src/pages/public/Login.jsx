@@ -1,18 +1,42 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
+import axios from 'axios'
+import Error from '../../components/Error'
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState([])
     const navigate = useNavigate();
+
+    const loginUser = async () => {
+        try {
+            const response = await axios.post('http://localhost:5000/api/auth/login', {
+                email: email,
+                password: password
+            })
+            const user = {
+                token: response.data.token,
+                email: response.data.email,
+                fullName: response.data.fullName,
+                isLoggedIn: response.data.isLoggedIn
+            }
+            localStorage.setItem('token', JSON.stringify(user));
+            console.log('Login successful:', response.data);
+            navigate('/dashboard');
+        } catch (error) {
+            console.error('Login error:', error.response ? error.response.data : error.message);
+            setError(prev => [...prev, error.response ? error.response.data.message : 'An error occurred']);
+        }
+    }
 
     const handleSubmit = e => {
         e.preventDefault();
-        if (email && password) {
-            localStorage.setItem('token', JSON.stringify({ email }));
-            navigate('/dashboard');
-        } else return
+        if (error.length > 0) setError([]);
+        loginUser();
+        setEmail('');
+        setPassword('');
     }
 
     return (
@@ -24,7 +48,11 @@ function Login() {
                     </h1>
                     <p className="text-slate-500 mt-2">Log in to manage your planning.</p>
                 </div>
-
+                {error && (
+                    error.map((err, index) => (
+                        <Error key={index} message={err} />
+                    ))
+                )}
                 <form className="space-y-5" onSubmit={handleSubmit}>
                     <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">Email Address</label>

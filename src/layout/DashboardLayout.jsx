@@ -6,8 +6,8 @@ function DashboardLayout() {
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
 
-    const token = JSON.parse(localStorage.getItem('token')) || null;
-    const email = token ? token.email : '';
+    const token = localStorage.getItem('token');
+    const {fullName} = token ? JSON.parse(token) : {};
 
     const logout = () => {
         localStorage.removeItem('token');
@@ -37,7 +37,7 @@ function DashboardLayout() {
                     </button>
 
                     <h1 className="text-lg font-medium text-gray-500">
-                        Welcome back, <span className="text-indigo-600 font-bold">{email.split('@')[0] || 'User'}</span>
+                        Welcome back, <span className="text-indigo-600 font-bold">{fullName || 'User'}</span>
                     </h1>
                 </div>
 

@@ -1,8 +1,8 @@
-console.log('Starting backend server...');
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import authRoutes from './routes/auth.js';
 
 dotenv.config();
 
@@ -17,6 +17,8 @@ app.get('/', (req, res) => {
 mongoose.connect(process.env.CONNECTION_STRING)
 .then(()=>console.log('Connected to MongoDB'))
 .catch((error) => console.error('Error connecting to MongoDB:', error));
+
+app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

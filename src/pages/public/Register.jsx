@@ -1,16 +1,51 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router'
+import axios from 'axios'
+import Error from '../../components/Error'
 
 function Register() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [error, setError] = useState([])
+    const [success, setSuccess] = useState(false)
+
+    const registerUser = async () => {
+        setSuccess(false);
+        setError([]);
+
+        try {
+            const response = await axios.post(
+                'http://localhost:5000/api/auth/register',
+                {
+                    fullName: name,
+                    email,
+                    password,
+                    confirmPassword
+                }
+            );
+
+            localStorage.setItem('token', JSON.stringify(response.data));
+            setSuccess(true);
+
+            setName('');
+            setEmail('');
+        } catch (error) {
+            setSuccess(false);
+            setError(prev => [
+                ...prev,
+                error.response?.data?.message || 'An error occurred'
+            ]);
+        }
+        setPassword('');
+        setConfirmPassword('');
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(`Name: ${name}, Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}`);
+        registerUser();
     }
 
     return (
@@ -22,7 +57,16 @@ function Register() {
                     </h1>
                     <p className="text-slate-500 mt-2">Join us to start planning your success.</p>
                 </div>
-
+                {error && (
+                    error.map((err, index) => (
+                        <Error key={index} message={err} />
+                    ))
+                )}
+                {success && (
+                    <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-4 text-center">
+                        Registration successful! You can now <Link to="/login" className=" font-bold hover:text-green-700 hover:underline transition">log in</Link>.
+                    </div>
+                )}
                 <form className="space-y-5" onSubmit={handleSubmit}>
                     <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">Full Name</label>
