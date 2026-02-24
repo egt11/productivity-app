@@ -3,7 +3,7 @@ import { CheckCircle2, Circle, Clock, MoreVertical, Trash2, Edit2 } from 'lucide
 import { useState } from 'react';
 
 function TaskCard({ task, onEdit, onDelete, onToggleStatus }) {
-    const isCompleted = task.status === 'completed';
+    const isCompleted = task.status === 'Complete';
     const priorityColors = {
         High: 'bg-red-50 text-red-600',
         Medium: 'bg-blue-50 text-blue-600',
@@ -48,8 +48,8 @@ function TaskCard({ task, onEdit, onDelete, onToggleStatus }) {
                         {date || 'No Deadline'}
                     </span>
 
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase whitespace-nowrap ${priorityColors[task.priority] || priorityColors.Low}`}>
-                        {task.priority}
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase whitespace-nowrap ${priorityColors[task.priorityLevel] || priorityColors.Low}`}>
+                        {task.priorityLevel}
                     </span>
                 </div>
             </div>

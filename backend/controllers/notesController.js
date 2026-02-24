@@ -37,7 +37,7 @@ export const editNote = async (req, res) => {
             { title: title, content: content, date: date },
             { returnDocument: 'after', runValidators: true }
         )
-        if (!updatedNote) return res.status(404).json({ message: 'Note note found' })
+        if (!updatedNote) return res.status(404).json({ message: 'Note not found' })
 
         res.status(200).json(updatedNote);
     } catch (error) {
@@ -50,7 +50,7 @@ export const deleteNote = async (req, res) => {
         const id = req.params.id
         const deletedNote = await Note.findOneAndDelete({ _id: id, user: req.user.id })
 
-        if (!deletedNote) return res.status(404).json({ message: 'Note note found' })
+        if (!deletedNote) return res.status(404).json({ message: 'Note not found' })
         res.status(200).json({ message: `Note deleted` });
     } catch (error) {
         return res.status(500).json({ message: 'Server error' })

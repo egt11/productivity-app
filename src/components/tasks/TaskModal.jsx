@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 function TaskModal({ onClose, priority, onSave, selectedTask }) {
     const [title, setTitle] = useState(selectedTask?.title || '');
-    const [priorityLevel, setPriorityLevel] = useState(selectedTask?.priority || priority[0]);
+    const [priorityLevel, setPriorityLevel] = useState(selectedTask?.priorityLevel || priority[0]);
     const [date, setDate] = useState(selectedTask?.date || '');
 
     const handleSubmit = e => {

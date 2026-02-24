@@ -3,6 +3,7 @@ import PageTitleButton from '../../components/PageTitleButton'
 import { useState, useEffect } from 'react'
 import TaskModal from '../../components/tasks/TaskModal'
 import TaskCard from '../../components/tasks/TaskCard'
+import axios from 'axios'
 
 function Tasks() {
   const [tasks, setTasks] = useState([])
@@ -10,6 +11,7 @@ function Tasks() {
   const [selectedTask, setSelectedTask] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [status, setStatus] = useState('Incomplete')
+  const [token, setToken] = useState(null)
 
   const handleAdd = () => {
     setSelectedTask(null)
@@ -18,48 +20,75 @@ function Tasks() {
 
   const handleEdit = (task) => {
     setSelectedTask(task)
-    setShowModal(true) 
+    setShowModal(true)
   }
 
-  const deleteTask = (id) => setTasks(tasks.filter(task => task.id !== id))
+  const deleteTask = async (id) => {
+    await axios.delete(`http://localhost:5000/api/tasks/${id}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    setTasks(tasks.filter(task => task._id !== id))
+  }
 
-  const handleSave = (data) => {
+  const saveTask = async (data) => {
     if (selectedTask) {
-      setTasks(tasks.map(task => task.id === selectedTask.id ? {...task, ...data } : task))
-    }else{
-      const newTask = {
-        id: Date.now(),
-        title: data.title,
-        priority: data.priorityLevel,
-        date: data.date,
-        status: 'Incomplete'
-      }
-      setTasks([...tasks, newTask])
+      const response = await axios.put(`http://localhost:5000/api/tasks/${selectedTask._id}`,
+        {
+          title: data.title,
+          priorityLevel: data.priorityLevel,
+          date: data.date
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      setTasks(tasks.map(task => task._id === selectedTask._id ? response.data : task))
+    } else {
+      const response = await axios.post('http://localhost:5000/api/tasks',
+        {
+          title: data.title,
+          priorityLevel: data.priorityLevel,
+          date: data.date
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      setTasks([...tasks, response.data])
     }
     setSelectedTask(null)
     closeModal()
   }
 
-  const toggleStatus = (id) => {
-    setTasks(tasks.map(task => task.id === id ? {...task, status: task.status === 'completed' ? 'Incomplete' : 'completed'} : task))
+  const toggleStatus = async (id) => {
+    const response = await axios.patch(`http://localhost:5000/api/tasks/${id}`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    setTasks(tasks.map(task => task._id === id ? response.data : task))
   }
 
   const closeModal = () => setShowModal(false)
 
-  useEffect(()=>{
-    const storedTasks = JSON.parse(localStorage.getItem('tasks')) || []
-    setTasks(storedTasks)
-  }, [])
+  useEffect(() => {
+    const storedToken = JSON.parse(localStorage.getItem('token'))
+    const token = storedToken?.token
+    setToken(token)
 
-  useEffect(()=>{
-    localStorage.setItem('tasks', JSON.stringify(tasks))
-  }, [tasks])
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/tasks',
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        setTasks(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchTasks()
+  }, [])
 
 
   return (
     <div>
       <PageTitleButton title="Your Tasks" button="Add Task" onClick={handleAdd} />
-      {showModal && <TaskModal priority={taskPriorities} onClose={closeModal} onSave={handleSave} selectedTask={selectedTask}/>}
+      {showModal && <TaskModal priority={taskPriorities} onClose={closeModal} onSave={saveTask} selectedTask={selectedTask} />}
 
       <div>
         {tasks.length === 0 ?
@@ -70,7 +99,7 @@ function Tasks() {
           :
 
           tasks.map(task => (
-            <TaskCard key={task.id} task={task} onEdit={() => handleEdit(task)} onDelete={() => deleteTask(task.id)} onToggleStatus={() => toggleStatus(task.id)} />
+            <TaskCard key={task._id} task={task} onEdit={() => handleEdit(task)} onDelete={() => deleteTask(task._id)} onToggleStatus={() => toggleStatus(task._id)} />
           ))
         }
       </div>
