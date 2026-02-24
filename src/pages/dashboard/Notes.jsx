@@ -3,11 +3,13 @@ import { useState, useEffect } from 'react'
 import NoteCard from '../../components/notes/NoteCard'
 import PageTitleButton from '../../components/PageTitleButton'
 import NoteModal from '../../components/notes/NoteModal'
+import axios from 'axios'
 
 function Notes() {
   const [notes, setNotes] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [selectedNote, setSelectedNote] = useState(null)
+  const [token, setToken] = useState(null)
 
   const handleAdd = () => {
     setSelectedNote(null)
@@ -16,25 +18,27 @@ function Notes() {
 
   const handleEdit = (note) => {
     setSelectedNote(note)
-    setShowModal(true) 
+    setShowModal(true)
   }
 
-  const deleteNote = (id) => {
-    setNotes(notes.filter(note => note.id !== id))
+  const deleteNote = async (id) => {
+    await axios.delete(`http://localhost:5000/api/notes/${id}`, { headers: { Authorization: `Bearer: ${token}` } })
+    setNotes(notes.filter(note => note._id !== id))
   }
 
-  const saveNote = (data) => {
+  const saveNote = async (data) => {
     if (selectedNote) {
-      setNotes(notes.map(note => note.id === selectedNote.id ? { ...note, ...data } : note))
-    }else{
-      const date = new Date().toLocaleDateString()
-      const newNote = {
-        id: Date.now(),
+      const response = await axios.put(`http://localhost:5000/api/notes/${selectedNote._id}`, {
         title: data.title,
-        content: data.content,
-        date: date
-      }
-      setNotes([...notes, newNote])
+        content: data.content
+      }, { headers: { Authorization: `Bearer ${token}` } })
+      setNotes(notes.map(note => note._id === selectedNote._id ? response.data : note))
+    } else {
+      const response = await axios.post('http://localhost:5000/api/notes', {
+        title: data.title,
+        content: data.content
+      }, { headers: { Authorization: `Bearer ${token}` } })
+      setNotes([...notes, response.data])
     }
     setSelectedNote(null)
     closeModal()
@@ -42,14 +46,23 @@ function Notes() {
 
   const closeModal = () => setShowModal(false)
 
-  useEffect(()=> {
-    const storedNotes = JSON.parse(localStorage.getItem('notes')) || []
-    setNotes(storedNotes)
-  }, [])
-
   useEffect(() => {
-    localStorage.setItem('notes', JSON.stringify(notes))
-  }, [notes])
+    const storedToken = JSON.parse(localStorage.getItem('token'))
+    const token = storedToken?.token
+    setToken(token)
+
+    const fetchNotes = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/notes', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        setNotes(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchNotes()
+  }, [])
 
   return (
     <div>
@@ -73,10 +86,10 @@ function Notes() {
 
           notes.map((note) => (
             <NoteCard
-              key={note.id}
+              key={note._id}
               note={note}
-              date={new Date().toLocaleDateString()}
-              onDelete={() => deleteNote(note.id)}
+              date={note.date}
+              onDelete={() => deleteNote(note._id)}
               onEdit={() => handleEdit(note)}
             />
           ))}

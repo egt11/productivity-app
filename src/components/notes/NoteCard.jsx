@@ -4,7 +4,7 @@ import DropdownMenu from './DropdownMenu';
 import { useState } from 'react';
 import ViewNote from './ViewNote';
 
-function NoteCard({ note, date, onDelete, onEdit }) {
+function NoteCard({ note, onDelete, onEdit }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isViewing, setIsViewing] = useState(false);
 
@@ -62,7 +62,7 @@ function NoteCard({ note, date, onDelete, onEdit }) {
             <div className="mt-5 pt-4 border-t border-slate-50 flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-400">
                 <div className="flex items-center gap-1.5">
                     <Calendar size={12} />
-                    <span>{date}</span>
+                    <span>{note.date}</span>
                 </div>
             </div>
         </div>
