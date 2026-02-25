@@ -27,7 +27,7 @@ export default function Navbar() {
                     <div className="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-200 group-hover:scale-110 transition-transform duration-200">
                         F
                     </div>
-                    <span className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors flex md:flex-row flex-col">
+                    <span className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors flex sm:flex-row flex-col">
                         Flow<span className="text-indigo-600 group-hover:text-indigo-700">State</span>
                     </span>
                 </Link>

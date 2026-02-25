@@ -5,8 +5,9 @@ import DashboardLayout from './layout/DashboardLayout'
 import Login from './pages/public/Login'
 import Register from './pages/public/Register'
 import Landing from './pages/public/Landing'
-import Dashboard from './pages/dashboard/Dashboard'
+import VerifyPage from './pages/public/VerifyPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import Dashboard from './pages/dashboard/Dashboard'
 import Notes from './pages/dashboard/Notes'
 import Tasks from './pages/dashboard/Tasks'
 import Settings from './pages/dashboard/Settings'
@@ -20,9 +21,11 @@ function App() {
         <Route path='register' element={<Register />} />
       </Route>
 
+      <Route path='/verify-email/:token' element={<VerifyPage />} />
+
       <Route element={<ProtectedRoute />}>
         <Route path='/dashboard' element={<DashboardLayout />}>
-          <Route index element={<Dashboard />}/>
+          <Route index element={<Dashboard />} />
           <Route path='notes' element={<Notes />} />
           <Route path='tasks' element={<Tasks />} />
           <Route path='settings' element={<Settings />} />

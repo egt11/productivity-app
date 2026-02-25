@@ -10,7 +10,7 @@ function Register() {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState([])
-    const [success, setSuccess] = useState(false)
+    const [success, setSuccess] = useState(null)
 
     const registerUser = async () => {
         setSuccess(false);
@@ -26,14 +26,12 @@ function Register() {
                     confirmPassword
                 }
             );
-
-            localStorage.setItem('token', JSON.stringify(response.data));
-            setSuccess(true);
+            setSuccess(response.data.message);
 
             setName('');
             setEmail('');
         } catch (error) {
-            setSuccess(false);
+            setSuccess(null);
             setError(prev => [
                 ...prev,
                 error.response?.data?.message || 'An error occurred'
@@ -64,7 +62,7 @@ function Register() {
                 )}
                 {success && (
                     <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-4 text-center">
-                        Registration successful! You can now <Link to="/login" className=" font-bold hover:text-green-700 hover:underline transition">log in</Link>.
+                        {success}
                     </div>
                 )}
                 <form className="space-y-5" onSubmit={handleSubmit}>
