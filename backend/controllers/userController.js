@@ -25,7 +25,7 @@ export const updateUserInfo = async (req, res) => {
 
         user.email = email
         user.fullName = fullName
-        
+
         if (password.length > 0) {
             const hashedPassword = await bcrypt.hash(password, 10)
             user.password = hashedPassword
@@ -35,6 +35,25 @@ export const updateUserInfo = async (req, res) => {
         const { newEmail, newFullName } = savedUser
 
         res.status(200).json({ newEmail: newEmail, newFullName: newFullName })
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error' })
+    }
+}
+
+export const getUserItems = async (req, res) => {
+    try {
+        const id = req.user.id
+
+        const notes = await Note.countDocuments({ user: id })
+        if (!notes) return res.status(400).json({ message: 'User notes not found' })
+
+        const tasks = await Task.countDocuments({ user: id })
+        if (!tasks) return res.status(400).json({ message: 'User tasks not found' })
+
+        const pendingTasks = await Task.countDocuments({ user: id, status: 'Incomplete' })
+        if (!pendingTasks) return res.status(400).json({ message: 'User tasks not found' })
+
+        res.status(200).json({ notes: notes, tasks: tasks, pendingTasks: pendingTasks })
     } catch (error) {
         return res.status(500).json({ message: 'Server error' })
     }
