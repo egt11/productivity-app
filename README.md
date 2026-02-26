@@ -1,16 +1,50 @@
-# React + Vite
+# 🚀 FlowState Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Overview
+FlowState is a personal planner app for users to easily take notes and have a to-do list. This web app can help users stay organized and boost productivity.
 
-Currently, two official plugins are available:
+### Tech Stack
+I used the **MERN stack** in this project:
+* **Frontend**: React, TailwindCSS, Axios (for making HTTP requests)
+* **Backend**: Node.js, Express.js
+* **Database**: MongoDB with Mongoose
+* **Auth & Utils**: JWT (JSON Web Tokens), Bcrypt for hashing, Resend for emails
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Features
+* **Notes & Tasks**: Full CRUD system for both.
+* **Auth + Verification**: Secure login and signup flow, including email verification so only real users get in.
+* **Responsive Design**: Looks and works great on all screen sizes.
 
-## React Compiler
+### Context
+I learn a lot by doing the work myself. So instead of watching tutorials and taking notes, I built this project to practice **Full-Stack Development** with modern tech.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+### Setup Instructions
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**1. Clone the repo**
+```bash
+git clone https://github.com/egt11/productivity-app.git
+```
+
+**2. Install dependencies**
+```bash
+npm install && cd frontend && npm install && cd ../backend && npm install
+```
+
+**4. Create account in MongoDB**
+* Create an account in mongodb atlas
+* Create a project
+* Create a cluster
+* Click connect and copy your mongodb connection string
+
+**4. Create .env file in backend folder**
+* PORT=your_port
+* CONNECTION_STRING=your_mongodb_connection_string
+* JWT_SECRET=your_jwt_secret
+* EMAIL_API_KEY=your_api_key_resend
+
+**5. Run the app**
+```bash
+cd .. && npm run dev
+```
