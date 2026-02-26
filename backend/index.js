@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import authRoutes from './routes/auth.js';
 import noteRoutes from './routes/notes.js'
 import taskRoutes from './routes/tasks.js'
+import userRoutes from './routes/user.js'
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ mongoose.connect(process.env.CONNECTION_STRING)
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', noteRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/user', userRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

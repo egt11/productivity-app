@@ -23,7 +23,6 @@ function Login() {
                 isLoggedIn: response.data.isLoggedIn
             }
             localStorage.setItem('token', JSON.stringify(user));
-            console.log('Login successful:', response.data);
             navigate('/dashboard');
         } catch (error) {
             console.error('Login error:', error.response ? error.response.data : error.message);
