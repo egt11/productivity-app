@@ -49,7 +49,7 @@ function Settings() {
     const token = storedToken?.token
 
     try {
-      await axios.put('http://localhost:5000/api/user/settings',
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/user/settings`,
         { email: email, fullName: name, password: password },
         { headers: { Authorization: `Bearer ${token}` } }
       )
@@ -79,7 +79,7 @@ function Settings() {
 
     const fetchUser = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/user/settings',
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/settings`,
           { headers: { Authorization: `Bearer ${token}` } }
         )
         const { email, fullName } = response.data

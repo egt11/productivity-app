@@ -24,7 +24,7 @@ function Tasks() {
   }
 
   const deleteTask = async (id) => {
-    await axios.delete(`http://localhost:5000/api/tasks/${id}`,
+    await axios.delete(`${import.meta.env.VITE_API_URL}/api/tasks/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     )
     setTasks(tasks.filter(task => task._id !== id))
@@ -32,7 +32,7 @@ function Tasks() {
 
   const saveTask = async (data) => {
     if (selectedTask) {
-      const response = await axios.put(`http://localhost:5000/api/tasks/${selectedTask._id}`,
+      const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/tasks/${selectedTask._id}`,
         {
           title: data.title,
           priorityLevel: data.priorityLevel,
@@ -42,7 +42,7 @@ function Tasks() {
       )
       setTasks(tasks.map(task => task._id === selectedTask._id ? response.data : task))
     } else {
-      const response = await axios.post('http://localhost:5000/api/tasks',
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/tasks`,
         {
           title: data.title,
           priorityLevel: data.priorityLevel,
@@ -57,7 +57,7 @@ function Tasks() {
   }
 
   const toggleStatus = async (id) => {
-    const response = await axios.patch(`http://localhost:5000/api/tasks/${id}`,
+    const response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/tasks/${id}`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     )
@@ -73,7 +73,7 @@ function Tasks() {
 
     const fetchTasks = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/tasks',
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/tasks`,
           { headers: { Authorization: `Bearer ${token}` } }
         )
         setTasks(response.data)

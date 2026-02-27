@@ -25,7 +25,7 @@ function Dashboard() {
 
         try {
             const response = await axios.get(
-                'http://localhost:5000/api/user/dashboard',
+                `${import.meta.env.VITE_API_URL}/api/user/dashboard`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

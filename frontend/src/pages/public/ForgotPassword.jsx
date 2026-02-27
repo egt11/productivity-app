@@ -14,6 +14,7 @@ function ForgotPassword() {
     const [isMatched, setIsMatched] = useState(false)
     const [success, setSuccess] = useState(null)
     const [error, setError] = useState([])
+    const [passwordChanged, setPasswordChanged] = useState(false)
 
     const sendCode = async () => {
         setSuccess(null)
@@ -23,7 +24,7 @@ function ForgotPassword() {
             return
         }
         try {
-            const response = await axios.patch('http://localhost:5000/api/auth/forgot-password',
+            const response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/auth/forgot-password`,
                 { email: email }
             )
             setIsSent(true)
@@ -41,7 +42,7 @@ function ForgotPassword() {
             return
         }
         try {
-            const response = await axios.patch('http://localhost:5000/api/auth/check-code',
+            const response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/auth/check-code`,
                 { email: email, code: code }
             )
             setSuccess(response.data.message)
@@ -70,10 +71,11 @@ function ForgotPassword() {
         }
 
         try {
-            const response = await axios.patch('http://localhost:5000/api/auth/reset-password',
+            const response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/auth/reset-password`,
                 { email: email, password: password }
             )
             setSuccess(response.data.message)
+            setPasswordChanged(true)
             setPassword('')
             setConfirmPassword('')
         } catch (error) {
@@ -196,42 +198,45 @@ function ForgotPassword() {
                         )}
                     </div>
 
-                    <form onSubmit={handleResetPassword} className="space-y-5">
-                        <div className="space-y-1.5">
-                            <label className="text-sm font-semibold text-slate-700 ml-1">New Password</label>
-                            <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                                <input
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="••••••••"
-                                    className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none"
-                                />
+                    <form onSubmit={handleResetPassword}>
+                        <fieldset disabled={passwordChanged} className="space-y-5">
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-semibold text-slate-700 ml-1">New Password</label>
+                                <div className="relative">
+                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                    <input
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="••••••••"
+                                        className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none"
+                                    />
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="space-y-1.5">
-                            <label className="text-sm font-semibold text-slate-700 ml-1">Confirm New Password</label>
-                            <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                                <input
-                                    type="password"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    placeholder="••••••••"
-                                    className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none"
-                                />
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-semibold text-slate-700 ml-1">Confirm New Password</label>
+                                <div className="relative">
+                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                    <input
+                                        type="password"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        placeholder="••••••••"
+                                        className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none"
+                                    />
+                                </div>
                             </div>
-                        </div>
+                            <button
+                                type="submit"
+                                className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-bold py-3.5 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-100 transition-all active:scale-[0.98]"
+                            >
+                                Update Password
+                                <CheckCircle2 size={18} />
+                            </button>
+                        </fieldset>
 
-                        <button
-                            type="submit"
-                            className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-bold py-3.5 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-100 transition-all active:scale-[0.98]"
-                        >
-                            Update Password
-                            <CheckCircle2 size={18} />
-                        </button>
+
                     </form>
 
                     <div className="mt-8 text-center">
