@@ -29,7 +29,7 @@ function ForgotPassword() {
             setIsSent(true)
             setSuccess(response.data.message)
         } catch (error) {
-            console.log(error)
+            setError(prev => [...prev, error.response.data.message])
         }
     }
 

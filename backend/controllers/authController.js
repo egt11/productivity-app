@@ -82,7 +82,9 @@ export const checkEmail = async (req, res) => {
     try {
         const code = crypto.randomInt(100000, 1000000).toString()
 
-        const user = await User.findOneAndUpdate({ email: email }, { resetPasswordCode: code })
+        const user = await User.findOneAndUpdate(
+            { email: email },
+            { $set: { resetPasswordCode: code } })
         if (!user) return res.status(400).json({ message: 'Email does not exist' })
 
         resetPasswordEmail(email, code)
