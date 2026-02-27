@@ -6,6 +6,7 @@ import Login from './pages/public/Login'
 import Register from './pages/public/Register'
 import Landing from './pages/public/Landing'
 import VerifyPage from './pages/public/VerifyPage'
+import ForgotPassword from './pages/public/ForgotPassword'
 import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from './pages/dashboard/Dashboard'
 import Notes from './pages/dashboard/Notes'
@@ -19,6 +20,7 @@ function App() {
         <Route index element={<Landing />} />
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
+        <Route path='forgot-password' element={<ForgotPassword />} />
       </Route>
 
       <Route path='/verify-email/:token' element={<VerifyPage />} />

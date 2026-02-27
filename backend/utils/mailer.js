@@ -19,7 +19,26 @@ export const sendVerificationEmail = async (userEmail, token) => {
         if (error) {
             throw error
         }
-        
+
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const resetPasswordEmail = async (userEmail, code) => {
+    try {
+        const { data, error } = await resend.emails.send({
+            from: 'FlowState <noreply@resend.dev>',
+            to: [userEmail],
+            subject: 'Email Verification',
+            html: `Hi there! Your reset code is ${code}`
+        })
+
+        if (error) {
+            throw error
+        }
+
         return data
     } catch (error) {
         console.log(error)

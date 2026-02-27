@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import crypto from 'crypto'
-import { sendVerificationEmail } from '../utils/mailer.js';
+import { sendVerificationEmail, resetPasswordEmail } from '../utils/mailer.js';
 
 dotenv.config();
 
@@ -62,13 +62,66 @@ export const login = async (req, res) => {
 export const verifyUser = async (req, res) => {
     const { token } = req.params
 
-    const user = await User.findOne({ verificationToken: token })
-    if (!user) return res.status(400).json({ message: 'Invalid/Expired token' })
+    try {
+        const user = await User.findOne({ verificationToken: token })
+        if (!user) return res.status(400).json({ message: 'Invalid/Expired token' })
 
-    user.isVerified = true
-    user.verificationToken = undefined
+        user.isVerified = true
+        user.verificationToken = undefined
 
-    await user.save()
-    res.status(200).json({ message: 'Email verified successfully!' })
+        await user.save()
+        res.status(200).json({ message: 'Email verified successfully!' })
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
 }
 
+export const checkEmail = async (req, res) => {
+    const { email } = req.body
+
+    try {
+        const code = crypto.randomInt(100000, 1000000).toString()
+
+        const user = await User.findOneAndUpdate({ email: email }, { resetPasswordCode: code })
+        if (!user) return res.status(400).json({ message: 'Email does not exist' })
+
+        resetPasswordEmail(email, code)
+        res.status(200).json({ message: `Please check your email and enter the code below` })
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+}
+
+export const verifyCode = async (req, res) => {
+    const { email, code } = req.body
+
+    try {
+        const user = await User.findOneAndUpdate(
+            { email: email, resetPasswordCode: code },
+            { $unset: { resetPasswordCode: 1 } },
+            { returnDocument: 'after' })
+
+        if (!user) return res.status(400).json({ message: 'Wrong code' })
+
+        res.status(200).json({ message: `Code matched!` })
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+}
+
+export const resetPassword = async (req, res) => {
+    const { email, password } = req.body
+
+    try {
+        const user = await User.findOne({ email: email })
+        if (!user) return res.status(400).json({ message: 'User not found' })
+
+        const hashedPassword = await bcrypt.hash(password, 10)
+        user.password = hashedPassword
+
+        await user.save()
+        res.status(200).json({ message: `User password updated!` })
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+}

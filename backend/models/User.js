@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema({
     },
     verificationToken : {
         type: String
+    },
+    resetPasswordCode : {
+        type: String
     }
 }, {
     timestamps: true
