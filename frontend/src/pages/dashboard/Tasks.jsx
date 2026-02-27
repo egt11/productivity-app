@@ -3,6 +3,7 @@ import PageTitleButton from '../../components/PageTitleButton'
 import { useState, useEffect } from 'react'
 import TaskModal from '../../components/tasks/TaskModal'
 import TaskCard from '../../components/tasks/TaskCard'
+import ConfirmDelete from '../../components/ConfirmDelete'
 import axios from 'axios'
 
 function Tasks() {
@@ -10,6 +11,7 @@ function Tasks() {
   const [taskPriorities, setTaskPriorities] = useState(['Low', 'Medium', 'High'])
   const [selectedTask, setSelectedTask] = useState(null)
   const [showModal, setShowModal] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
   const [status, setStatus] = useState('Incomplete')
   const [token, setToken] = useState(null)
 
@@ -23,11 +25,17 @@ function Tasks() {
     setShowModal(true)
   }
 
+  const handleDelete = (task) => {
+    setSelectedTask(task)
+    setShowConfirm(true)
+  }
+
   const deleteTask = async (id) => {
     await axios.delete(`${import.meta.env.VITE_API_URL}/api/tasks/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     )
     setTasks(tasks.filter(task => task._id !== id))
+    setShowConfirm(false)
   }
 
   const saveTask = async (data) => {
@@ -99,10 +107,17 @@ function Tasks() {
           :
 
           tasks.map(task => (
-            <TaskCard key={task._id} task={task} onEdit={() => handleEdit(task)} onDelete={() => deleteTask(task._id)} onToggleStatus={() => toggleStatus(task._id)} />
+            <TaskCard key={task._id} task={task} onEdit={() => handleEdit(task)} onDelete={() => handleDelete(task)} onToggleStatus={() => toggleStatus(task._id)} />
           ))
         }
       </div>
+
+      {showConfirm &&
+        <ConfirmDelete 
+        item={"task"}
+        onClose={() => setShowConfirm(false)} 
+        onSave={() => deleteTask(selectedTask._id)} />
+      }
     </div>
   )
 }

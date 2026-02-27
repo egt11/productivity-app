@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import NoteCard from '../../components/notes/NoteCard'
 import PageTitleButton from '../../components/PageTitleButton'
 import NoteModal from '../../components/notes/NoteModal'
+import ConfirmDelete from '../../components/ConfirmDelete'
 import axios from 'axios'
 
 function Notes() {
@@ -10,6 +11,7 @@ function Notes() {
   const [showModal, setShowModal] = useState(false)
   const [selectedNote, setSelectedNote] = useState(null)
   const [token, setToken] = useState(null)
+  const [showConfirm, setShowConfirm] = useState(false)
 
   const handleAdd = () => {
     setSelectedNote(null)
@@ -21,9 +23,15 @@ function Notes() {
     setShowModal(true)
   }
 
+  const handleDelete = (note) => {
+    setSelectedNote(note)
+    setShowConfirm(true)
+  }
+
   const deleteNote = async (id) => {
     await axios.delete(`${import.meta.env.VITE_API_URL}/api/notes/${id}`, { headers: { Authorization: `Bearer: ${token}` } })
     setNotes(notes.filter(note => note._id !== id))
+    setShowConfirm(false)
   }
 
   const saveNote = async (data) => {
@@ -89,10 +97,19 @@ function Notes() {
               key={note._id}
               note={note}
               date={note.date}
-              onDelete={() => deleteNote(note._id)}
+              onDelete={() => handleDelete(note)}
               onEdit={() => handleEdit(note)}
             />
           ))}
+
+        {showConfirm &&
+          <ConfirmDelete
+            item={"note"}
+            onClose={() => setShowConfirm(false)}
+            onSave={() => deleteNote(selectedNote._id)}
+          />
+        }
+
       </div>
     </div>
   )
