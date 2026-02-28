@@ -10,8 +10,6 @@ function TaskCard({ task, onEdit, onDelete, onToggleStatus }) {
         Low: 'bg-slate-100 text-slate-500'
     };
 
-    const date = task.date ? new Date(task.date).toLocaleDateString() : null;
-
     const [showOptions, setShowOptions] = useState(false);
 
     const showOptionsMenu = () => setShowOptions(!showOptions);
@@ -45,7 +43,7 @@ function TaskCard({ task, onEdit, onDelete, onToggleStatus }) {
                 <div className="flex items-center gap-3 mt-1">
                     <span className="flex items-center gap-1 text-[11px] font-bold uppercase text-slate-400 whitespace-nowrap">
                         <Clock size={12} />
-                        {date || 'No Deadline'}
+                        {task.date}
                     </span>
 
                     <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase whitespace-nowrap ${priorityColors[task.priorityLevel] || priorityColors.Low}`}>

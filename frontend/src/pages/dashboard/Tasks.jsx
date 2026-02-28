@@ -39,12 +39,13 @@ function Tasks() {
   }
 
   const saveTask = async (data) => {
+    const storeDate = data.date || 'No deadline'
     if (selectedTask) {
       const response = await axios.put(`${import.meta.env.VITE_API_URL}/api/tasks/${selectedTask._id}`,
         {
           title: data.title,
           priorityLevel: data.priorityLevel,
-          date: data.date
+          date: storeDate
         },
         { headers: { Authorization: `Bearer ${token}` } }
       )
@@ -54,7 +55,7 @@ function Tasks() {
         {
           title: data.title,
           priorityLevel: data.priorityLevel,
-          date: data.date
+          date: storeDate
         },
         { headers: { Authorization: `Bearer ${token}` } }
       )
