@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     },
     resetPasswordCode : {
         type: String
+    },
+    resetPasswordAttempt: {
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true

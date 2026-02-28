@@ -98,12 +98,34 @@ export const verifyCode = async (req, res) => {
     const { email, code } = req.body
 
     try {
-        const user = await User.findOneAndUpdate(
-            { email: email, resetPasswordCode: code },
-            { $unset: { resetPasswordCode: 1 } },
-            { returnDocument: 'after' })
+        const user = await User.findOne({ email })
 
-        if (!user) return res.status(400).json({ message: 'Wrong code' })
+        if (user.resetPasswordAttempt > 4) {
+            await User.findOneAndUpdate(
+                { email: email },
+                {
+                    $unset: { resetPasswordCode: 1 },
+                    $set: { resetPasswordAttempt: 0 }
+                }
+            )
+            return res.status(400).json({ message: 'Your code has expired.', expired: true });
+        }
+
+        if (user.resetPasswordCode !== code) {
+            await User.findOneAndUpdate(
+                { email: email },
+                { $inc: { resetPasswordAttempt: 1 } }
+            )
+            return res.status(400).json({ message: 'Wrong code. Try again.' });
+        }
+
+        await User.findOneAndUpdate(
+            { email: email },
+            {
+                $unset: { resetPasswordCode: 1 },
+                $set: { resetPasswordAttempt: 0 }
+            }
+        )
 
         res.status(200).json({ message: `Code matched!` })
     } catch (error) {

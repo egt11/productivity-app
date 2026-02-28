@@ -7,7 +7,7 @@ router.post('/register', register);
 router.post('/login', login);
 router.get('/verify/:token', verifyUser)
 router.patch('/forgot-password', checkEmail)
-router.patch('/check-code', verifyCode)
+router.post('/check-code', verifyCode)
 router.patch('/reset-password', resetPassword)
 
 export default router;

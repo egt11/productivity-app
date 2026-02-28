@@ -15,6 +15,7 @@ function ForgotPassword() {
     const [success, setSuccess] = useState(null)
     const [error, setError] = useState([])
     const [passwordChanged, setPasswordChanged] = useState(false)
+    const [isExpired, setIsExpired] = useState(false)
 
     const sendCode = async () => {
         setSuccess(null)
@@ -42,13 +43,14 @@ function ForgotPassword() {
             return
         }
         try {
-            const response = await axios.patch(`${import.meta.env.VITE_API_URL}/api/auth/check-code`,
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/check-code`,
                 { email: email, code: code }
             )
             setSuccess(response.data.message)
             setIsMatched(true)
         } catch (error) {
-            console.log(error)
+            setError(prev => [...prev, error.response.data.message])
+            setIsExpired(error.response.data.expired || false)
         }
     }
 
@@ -151,6 +153,7 @@ function ForgotPassword() {
                                 <div className="relative">
                                     <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                     <input
+                                        disabled={isExpired}
                                         type="text"
                                         value={code}
                                         onChange={(e) => setCode(e.target.value)}
@@ -162,6 +165,7 @@ function ForgotPassword() {
                         )}
 
                         <button
+                            disabled={isExpired}
                             type="submit"
                             className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-bold py-3.5 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-100 transition-all active:scale-[0.98]"
                         >
