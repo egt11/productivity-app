@@ -42,9 +42,13 @@ npm install && cd frontend && npm install && cd ../backend && npm install
 * PORT=your_port
 * CONNECTION_STRING=your_mongodb_connection_string
 * JWT_SECRET=your_jwt_secret
-* EMAIL_API_KEY=your_api_key_resend
+* EMAIL_API_KEY=your_resend_api_key
+* FRONTEND_URL=your_frontend_port_url
 
-**5. Run the app**
+**5. Create .env file in frontend folder**
+* VITE_API_URL=your_backend_port_url
+
+**6. Run the app**
 ```bash
 cd .. && npm run dev
 ```
