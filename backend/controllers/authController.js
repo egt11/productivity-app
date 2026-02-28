@@ -149,3 +149,16 @@ export const resetPassword = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 }
+
+export const validateUser = async (req, res) => {
+    const id = req.user.id
+
+    try {
+        const user = await User.findOne({ _id: id })
+        if (!user) return res.status(400).json({ message: 'User not found' })
+
+        res.status(200).json({ isLoggedIn: true })
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+}
