@@ -8,9 +8,9 @@ import { sendVerificationEmail, resetPasswordEmail } from '../utils/mailer.js';
 dotenv.config();
 
 export const register = async (req, res) => {
-    const { fullName, email, password, confirmPassword } = req.body;
+    const { displayName, email, password, confirmPassword } = req.body;
 
-    if (!fullName || !email || !password || !confirmPassword) return res.status(400).json({ message: 'All fields are required' });
+    if (!displayName || !email || !password || !confirmPassword) return res.status(400).json({ message: 'All fields are required' });
 
     try {
         const existingUser = await User.findOne({ email });
@@ -25,9 +25,10 @@ export const register = async (req, res) => {
         const newUser = await User.create({
             email: email,
             password: hashedPassword,
-            fullName: fullName,
+            displayName: displayName,
             verificationToken: verificationToken
         })
+        
 
         sendVerificationEmail(email, verificationToken)
 
@@ -53,7 +54,7 @@ export const login = async (req, res) => {
 
         const token = jwt.sign({ id: storedUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-        res.status(200).json({ token, email: storedUser.email, fullName: storedUser.fullName, isLoggedIn: true });
+        res.status(200).json({ token, email: storedUser.email, displayName: storedUser.displayName, isLoggedIn: true });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }

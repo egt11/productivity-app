@@ -8,8 +8,8 @@ export const getUserInfo = async (req, res) => {
         const id = req.user.id
 
         const user = await User.findOne({ _id: id })
-        const { email, fullName } = user
-        res.status(200).json({ email: email, fullName: fullName })
+        const { email, displayName } = user
+        res.status(200).json({ email: email, displayName: displayName })
     } catch (error) {
         return res.status(500).json({ message: 'Server error' })
     }
@@ -18,13 +18,13 @@ export const getUserInfo = async (req, res) => {
 export const updateUserInfo = async (req, res) => {
     try {
         const id = req.user.id
-        const { email, fullName, password } = req.body
+        const { email, displayName, password } = req.body
 
         const user = await User.findOne({ _id: id })
         if (!user) res.status(400).json({ message: 'User not found' })
 
         user.email = email
-        user.fullName = fullName
+        user.displayName = displayName
 
         if (password.length > 0) {
             const hashedPassword = await bcrypt.hash(password, 10)
@@ -32,9 +32,9 @@ export const updateUserInfo = async (req, res) => {
         }
 
         const savedUser = await user.save()
-        const { newEmail, newFullName } = savedUser
+        const { newEmail, newDisplayName } = savedUser
 
-        res.status(200).json({ newEmail: newEmail, newFullName: newFullName })
+        res.status(200).json({ newEmail: newEmail, newDisplayName: newDisplayName })
     } catch (error) {
         return res.status(500).json({ message: 'Server error' })
     }

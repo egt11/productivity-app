@@ -7,7 +7,7 @@ function DashboardLayout() {
     const [isOpen, setIsOpen] = useState(false);
 
     const token = localStorage.getItem('token');
-    const {fullName} = token ? JSON.parse(token) : {};
+    const {displayName} = token ? JSON.parse(token) : {};
 
     const logout = () => {
         localStorage.removeItem('token');
@@ -37,7 +37,7 @@ function DashboardLayout() {
                     </button>
 
                     <h1 className="text-lg font-medium text-gray-500">
-                        Welcome back, <span className="text-indigo-600 font-bold">{fullName || 'User'}</span>
+                        Welcome back, <span className="text-indigo-600 font-bold">{displayName || 'User'}</span>
                     </h1>
                 </div>
 

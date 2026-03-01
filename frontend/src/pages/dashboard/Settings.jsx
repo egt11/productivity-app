@@ -6,7 +6,7 @@ import Error from '../../components/Error'
 
 function Settings() {
   const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
+  const [displayName, setDisplayName] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isEditing, setIsEditing] = useState(false)
@@ -17,8 +17,8 @@ function Settings() {
     setSuccess(false)
     setError([])
 
-    if (!email || !name) {
-      setError(prev => [...prev, 'Email or Full Name must not be empty.'])
+    if (!email || !displayName) {
+      setError(prev => [...prev, 'Email or Display Name must not be empty.'])
       return
     }
 
@@ -50,12 +50,12 @@ function Settings() {
 
     try {
       await axios.put(`${import.meta.env.VITE_API_URL}/api/user/settings`,
-        { email: email, fullName: name, password: password },
+        { email: email, displayName: displayName, password: password },
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setSuccess(true)
 
-      storedToken.fullName = name
+      storedToken.displayName = displayName
       storedToken.email = email
       localStorage.setItem('token', JSON.stringify(storedToken))
 
@@ -82,9 +82,9 @@ function Settings() {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/settings`,
           { headers: { Authorization: `Bearer ${token}` } }
         )
-        const { email, fullName } = response.data
+        const { email, displayName } = response.data
         setEmail(email)
-        setName(fullName)
+        setDisplayName(displayName)
       } catch (error) {
         console.log(error)
       }
@@ -128,13 +128,13 @@ function Settings() {
 
             {/* Full Name Field */}
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700 ml-1">Full Name</label>
+              <label className="text-sm font-semibold text-slate-700 ml-1">Display Name</label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                 <input
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-white disabled:bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-700 placeholder:text-slate-400"
                   placeholder="Enter your full name"
                 />

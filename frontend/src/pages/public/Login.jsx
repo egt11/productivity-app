@@ -19,7 +19,7 @@ function Login() {
             const user = {
                 token: response.data.token,
                 email: response.data.email,
-                fullName: response.data.fullName,
+                displayName: response.data.displayName,
                 isLoggedIn: response.data.isLoggedIn
             }
             localStorage.setItem('token', JSON.stringify(user));

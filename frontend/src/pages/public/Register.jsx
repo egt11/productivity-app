@@ -5,7 +5,7 @@ import axios from 'axios'
 import Error from '../../components/Error'
 
 function Register() {
-    const [name, setName] = useState('')
+    const [displayName, setDisplayName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -20,7 +20,7 @@ function Register() {
             const response = await axios.post(
                 `${import.meta.env.VITE_API_URL}/api/auth/register`,
                 {
-                    fullName: name,
+                    displayName,
                     email,
                     password,
                     confirmPassword
@@ -28,7 +28,7 @@ function Register() {
             );
             setSuccess(response.data.message);
 
-            setName('');
+            setDisplayName('');
             setEmail('');
         } catch (error) {
             setSuccess(null);
@@ -67,12 +67,12 @@ function Register() {
                 )}
                 <form className="space-y-5" onSubmit={handleSubmit}>
                     <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">Full Name</label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1.5 ml-1">Display Name</label>
                         <input
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={displayName}
+                            onChange={(e) => setDisplayName(e.target.value)}
                             type="text"
-                            placeholder="e.g. John Doe"
+                            placeholder="e.g. User00"
                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
                         />
                     </div>
